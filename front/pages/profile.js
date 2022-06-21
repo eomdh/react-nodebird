@@ -1,8 +1,15 @@
 import React from 'react';
+import Head from 'next/head';
+import AppLayout from '../components/AppLayout';
 
 const Profile = () => {
   return (
-    <div>내 프로필</div>
+    <>
+      <Head>
+        <title>NodeBird | 내 프로필</title>
+      </Head>
+      <AppLayout>내 프로필</AppLayout>
+    </>
   )
 }
 

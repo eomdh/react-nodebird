@@ -2,9 +2,7 @@ import React from "react";
 
 const PostCard = () => {
   return (
-    <>
-      PostCard
-    </>
+    <div>PostCard</div>
   )
 }
 

@@ -29,3 +29,5 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
 - 컴포넌트의 props로 넘겨주는 함수는 useCallback을 사용해줌으로 최적화
 - 불필요한 리렌더링을 막기 위해 inline style을 사용하지 않고 styled-component(또는 useMemo 등)를 사용하는 것이 최적화에 도움
 
+### # ch3
+

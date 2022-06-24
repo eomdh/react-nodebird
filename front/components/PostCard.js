@@ -1,10 +1,17 @@
 import React, { useCallback, useState } from "react";
+import PropTypes from 'prop-types';
 import { useSelector } from "react-redux";
 import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 
 import PostImages from "./PostImages";
 import CommentForm from "./CommentForm";
+import PostCardContent from "./PostCardContent";
+
+const CardWrapper = styled.div`
+  margin-bottom: 20px;
+`;
 
 const PostCard = ({ post }) => {
   const [liked, setLiked] = useState(false);
@@ -20,7 +27,7 @@ const PostCard = ({ post }) => {
   }, []);
 
   return (
-    <div style={{ marginBottom: 20 }}>
+    <CardWrapper>
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
@@ -46,8 +53,8 @@ const PostCard = ({ post }) => {
       >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-          title={post.nickname}
-          description={post.content}
+          title={post.User.nickname}
+          description={<PostCardContent postData={post.content} />}
         />
       </Card>
       {commentFormOpend && (
@@ -70,8 +77,19 @@ const PostCard = ({ post }) => {
         </div>)}
       {/* <CommentForm />
       <Comments /> */}
-    </div>
+    </CardWrapper>
   )
 }
+
+PostCard.propTypes = {
+  post: PropTypes.shape({
+    id: PropTypes.number,
+    User: PropTypes.object,
+    content: PropTypes.string,
+    createdAt: PropTypes.object,
+    Comments: PropTypes.arrayOf(PropTypes.any),
+    Images: PropTypes.arrayOf(PropTypes.any),
+  }),
+};
 
 export default PostCard;

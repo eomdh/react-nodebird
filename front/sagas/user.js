@@ -49,7 +49,7 @@ function signUpAPI() {
   return axios.post('/api/signup')
 }
 
-function* logOut() {
+function* signUp() {
   try {
     // const result = yield call(signUpAPI);
     yield delay(1000);
@@ -73,7 +73,7 @@ function* watchLogOut() {
 }
 
 function* watchSignUp() {
-  yield takeLatest(SIGN_UP_REQUEST, logOut);
+  yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
 export default function* userSaga() {

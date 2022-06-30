@@ -13,7 +13,7 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
 <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white">
 <br />
 
-## ✏ 실습 내용
+# ✏ 실습 내용
 ### ch1
 - SSR(Server Side Rendering)이란?
   - 클라이언트가 접속했을때 브라우저에서 자바스크립트 코드를 다운로드 받아 해석 할 때까지 기다리지 않고,<br />

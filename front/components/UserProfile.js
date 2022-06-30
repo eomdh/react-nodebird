@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Button, Card } from 'antd';
 import styled from 'styled-components';
 
-import { logoutRequestAction } from '../reducers/user';
+import { LOG_OUT_REQUEST } from '../reducers/user';
 
 const ButtonWrapper = styled(Button)`
   margin-top: 20px;
@@ -14,15 +14,17 @@ const UserProfile = () => {
   const { me, logOutLoading } = useSelector((state) => state.user);
 
   const onLogout = useCallback(() => {
-    dispatch(logoutRequestAction());
-  })
+    dispatch({
+      type: LOG_OUT_REQUEST,
+    });
+  }, []);
   
   return (
     <Card
       actions={[
-        <div key="twit">짹짹<br />0</div>,
-        <div key="followings">팔로잉<br />0</div>,
-        <div key="followers">팔로워<br />0</div>
+        <div key="twit">짹짹<br />{me.Posts.length}</div>,
+        <div key="followings">팔로잉<br />{me.Followings.length}</div>,
+        <div key="followers">팔로워<br />{me.Followers.length}</div>
       ]}
     >
       <Card.Meta

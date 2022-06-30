@@ -1,26 +1,29 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPost } from '../reducers/post';
+import useInput from '../hooks/useInput';
 import { Button, Form, Input } from 'antd';
 
 const PostForm = () => {
-  const { imagePaths } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const dispatch = useDispatch();
+  const [text, onChangeText, setText] = useInput('');
+
+  // 글쓰기가 완료되면 text 초기화
+  useEffect(() => {
+    if (addPostDone) {
+      setText('');
+    }
+  }, [addPostDone])
+
+  const onSubmitForm = useCallback(() => {
+    dispatch(addPost(text));
+  }, [text]);
+
   const imageInput = useRef();
-  const [text, setText] = useState('');
-
-  const onChangeText = useCallback((e) => {
-    setText(e.target.value);
-  }, []);
-
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput.current]);
-
-  const onSubmitForm = useCallback(() => {
-    dispatch(addPost);
-    setText('');
-  }, []);
 
   return (
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmitForm}>

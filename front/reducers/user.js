@@ -59,60 +59,60 @@ export const logoutRequestAction = () => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOG_IN_REQUEST:
-      return  {
+      return {
         ...state,
         logInLoading: true,
         logInDone: false,
         logInError: null,
       }
     case LOG_IN_SUCCESS:
-      return  {
+      return {
         ...state,
         logInLoading: false,
         logInDone: true,
         me: dummyUser(action.data),
       }
     case LOG_IN_FAILURE: 
-      return  {
+      return {
         ...state,
         logInLoading: false,
         logInError: action.error,
       }
     case LOG_OUT_REQUEST:
-      return  {
+      return {
         ...state,
         logOutLoading: true,
         logOutDone: false,
         logOutError: null,
       }
     case LOG_OUT_SUCCESS:
-      return  {
+      return {
         ...state,
         logOutLoading: false,
         logOutDone: true,
         me: null,
       }
     case LOG_OUT_FAILURE: 
-      return  {
+      return {
         ...state,
         logOutLoading: false,
         logOutError: action.error,
       }
     case SIGN_UP_REQUEST:
-      return  {
+      return {
         ...state,
         signUpLoading: true,
         signUpDone: false,
         signUpError: null,
       }
     case SIGN_UP_SUCCESS:
-      return  {
+      return {
         ...state,
         signUpLoading: false,
         signUpDone: true,
       }
     case SIGN_UP_FAILURE: 
-      return  {
+      return {
         ...state,
         signUpLoading: false,
         signUpError: action.error,

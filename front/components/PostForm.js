@@ -5,8 +5,8 @@ import useInput from '../hooks/useInput';
 import { Button, Form, Input } from 'antd';
 
 const PostForm = () => {
-  const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const dispatch = useDispatch();
+  const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const [text, onChangeText, setText] = useInput('');
 
   // 글쓰기가 완료되면 text 초기화

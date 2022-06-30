@@ -11,7 +11,7 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
 
 ### - Deploy
 <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white">
-<br /> <br />
+<br />
 
 ## ✏ 실습 내용
 ### ch1

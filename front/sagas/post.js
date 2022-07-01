@@ -12,7 +12,7 @@ import {
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
 
 function loadPostsAPI(data) {
-  return axios.get('/api/post', data)
+  return axios.get('/api/posts', data)
 }
 
 function* loadPosts(action) {

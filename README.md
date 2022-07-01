@@ -50,3 +50,48 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
   => redux-devtools에 액션을 기록하기 위해 미들웨어 사용
 - reducer를 합칠때는 combineReducer가 필요함
 - react-slick 라이브러리로 캐러셀 구현
+
+### # ch4
+- Redux-thunk : Redux가 비동기액션을 dispatch할 수 있도록 도와주는 역할, 하나의 비동기 액션안에 여러 개의 동기액션을 넣을 수 있음
+- Redux-Saga란?
+  - thunk보다 지원하는 기능이 많음, 다양한 이펙트들을 지원하여 thunk에서는 직접 구현해야하는 불편함을 덜어줌
+  - 제너레이터의 원리와 다양한 이펙트, 전체적인 흐름을 잘 아는것이 중요
+  - rootSaga를 만들고, 거기에 비동기 액션들을 만들어줌
+- 제너레이터 문법 : 중단점이 있는 함수
+- ```javascript
+     const gen = function* () {
+      console.log(1);
+      yield;
+      console.log(2);
+      yield;
+      console.log(3);
+      yield;
+     }
+  ```
+  - gen.next();를 실행할 때 마다 yield가 있는 부분까지 실행되고 중단됨
+- Redux-Saga의 이펙트들
+  - all : 배열을 받아서 배열안의 있는 것들을 한번에 실행
+  - fork / call : fork는 비동기 함수호출, call은 동기 함수호출
+  - take : 액션이 실행될 때까지 대기 take(일회성), takeEvery(while(true)), takeLatest(여러번의 요청이 있을 때, 마지막 응답만)
+  - throttle : 몇 초 동안에는 한번의 요청만 가능(DDoS 방지)
+  - put : (=) Dispatch
+- 더미데이터 만들 때 사용하는 라이브러리
+  - shortId : 무작위 아이디를 생성해주는 라이브러리
+  - faker : 이름, 문단, 문장, 이미지 등의 더미데이터를 생성해주는 라이브러리
+- immer : 불변성을 유지하는 코드를 작성하기 쉽게 도와주는 라이브러리
+- ```javascript
+  function onScroll() {
+        if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 400) {
+          if (hasMorePosts && !loadPostsLoading) {  // 다 불러왔거나, 불러오는 중이면 dispatch 안됨
+            dispatch({
+              type: LOAD_POSTS_REQUEST,
+            });
+          }
+        }
+      }
+  ```
+  - 인피니티 스크롤링 코드
+  - useEffect에서 window.addEventListener 사용할 때 꼭 return해서 사용했던 이벤트리스너를 해제해줘야 함
+
+  
+ 

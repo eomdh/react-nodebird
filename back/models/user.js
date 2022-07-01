@@ -19,6 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     charset: 'utf8',
     collate: 'utf8_general_ci',    // 한글 저장
   });
-  User.associate = (db) => {};
+  User.associate = (db) => {  
+    db.User.hasMany(db.Post);                                         // through: 중간테이블 이름 변경 
+    db.User.hasMany(db.Comment);                                      // as: 별칭
+    db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' }); // foreignKey: 중간테이블에서 사용하는 아이디
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });
+  };
   return User;
-}
+};

@@ -5,6 +5,12 @@ const db = {};
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
+db.User = require('./user')(Sequelize, Sequelize);
+db.Post = require('./post')(Sequelize, Sequelize);
+db.Comment = require('./comment')(Sequelize, Sequelize);
+db.Hastag = require('./hashtag')(Sequelize, Sequelize);
+db.Image = require('./image')(Sequelize, Sequelize);
+
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

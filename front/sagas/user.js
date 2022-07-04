@@ -1,4 +1,4 @@
-import { all, delay, fork, put, takeLatest } from "redux-saga/effects";
+import { all, call, delay, fork, put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 import { 
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, 
@@ -9,16 +9,15 @@ import {
 } from "../reducers/user";
 
 function logInAPI(data) {
-  return axiosos.post('/api/login', data)
-}
+  return axios.post('/user/login', data)
+};
 
 function* logIn(action) {
   try {
-    // const result = yield call(logInAPI, action.data);
-    yield delay(1000);  // 서버가 없기 떄문에 비동기적인 효과
+    const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     yield put({
@@ -26,10 +25,10 @@ function* logIn(action) {
       error: err.response.data,
     })
   }
-}
+};
 
 function logOutAPI() {
-  return axios.post('/api/logout')
+  return axios.post('/user/logout')
 }
 
 function* logOut() {
@@ -48,14 +47,14 @@ function* logOut() {
   }
 }
 
-function signUpAPI() {
-  return axios.post('/api/signup')
-}
+function signUpAPI(data) {
+  return axios.post('/user', data);  // data: email, password, nickname
+}                                    // post, put, patch만 데이터 넘길수 있음
 
-function* signUp() {
+function* signUp(action) {
   try {
-    // const result = yield call(signUpAPI);
-    yield delay(1000);
+    const result = yield call(signUpAPI, action.data);
+    console.log(result);
     yield put({
       type: SIGN_UP_SUCCESS,
     });
@@ -68,7 +67,7 @@ function* signUp() {
 }
 
 function followAPI() {
-  return axios.post('/api/follow')
+  return axios.post('/follow')
 }
 
 function* follow(action) {
@@ -88,7 +87,7 @@ function* follow(action) {
 }
 
 function unfollowAPI() {
-  return axios.post('/api/unfollow')
+  return axios.post('/unfollow')
 }
 
 function* unfollow(action) {

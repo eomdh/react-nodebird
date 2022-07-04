@@ -1,12 +1,28 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 const { User } = require('../models'); // 구조분해할당
 
 const router = express.Router();
 
-router.post('/login', (req, res, next) => {   // POST /user/login
-
-})
+router.post('/login', (req, res, next) => { // 미들웨어 확장
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {  // 서버에러
+      console.error(err);
+      return next(err);
+    }
+    if (info) { // 클라이언트에러
+      return res.status(401).send(info.reason);
+    }
+    return req.login(user, async (loginErr) => {
+      if(loginErr) {  // passport 에러
+        console.errer(loginErr);
+        return next(loginErr);
+      }
+      return res.json(user);
+    });
+  })(req, res, next);
+});
 
 router.post('/', async (req, res, next) => {  // POST /user/
   try {

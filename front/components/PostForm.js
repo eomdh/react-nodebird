@@ -16,7 +16,7 @@ const PostForm = () => {
     }
   }, [addPostDone])
 
-  const onSubmitForm = useCallback(() => {
+  const onSubmitPost = useCallback(() => {
     dispatch(addPost(text));
   }, [text]);
 
@@ -26,7 +26,7 @@ const PostForm = () => {
   }, [imageInput.current]);
 
   return (
-    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmitForm}>
+    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmitPost}>
       <Input.TextArea 
         value={text} 
         onChange={onChangeText}

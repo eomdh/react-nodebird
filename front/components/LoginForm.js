@@ -28,13 +28,13 @@ const LoginForm = () => {
     }
   }, [logInError]);
 
-  const onSubmitForm = useCallback(() => {
+  const onLogin = useCallback(() => {
     console.log(email, password);
     dispatch(loginRequestAction({ email, password }));
   }, [email, password])
 
   return (
-    <FormWrapper onFinish={onSubmitForm}>
+    <FormWrapper onFinish={onLogin}>
       <div>
         <label htmlFor="user-email">이메일</label>
         <br />

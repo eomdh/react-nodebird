@@ -5,6 +5,7 @@ import {
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, 
   LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE,
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
+  CHANGE_NICKNAME_REQUEST, CHANGE_NICKNAME_SUCCESS, CHANGE_NICKNAME_FAILURE,
   FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
   UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE
 } from "../reducers/user";
@@ -49,7 +50,7 @@ function* logIn(action) {
 
 function logOutAPI() {
   return axios.post('/user/logout')
-}
+};
 
 function* logOut() {
   try {
@@ -64,11 +65,11 @@ function* logOut() {
       error: err.response.data,
     });
   }
-}
+};
 
 function signUpAPI(data) {
   return axios.post('/user', data);  // data: email, password, nickname
-}                                    // post, put, patch만 데이터 넘길수 있음
+};                                   // post, put, patch만 데이터 넘길수 있음
 
 function* signUp(action) {
   try {
@@ -83,11 +84,30 @@ function* signUp(action) {
       error: err.response.data,
     })
   }
-}
+};
+
+function changeNicknameAPI(data) {
+  return axios.patch('/user/nickname', { nickname: data });
+};
+
+function* changeNickname(action) {
+  try {
+    const result = yield call(changeNicknameAPI, action.data);
+    yield put({
+      type: CHANGE_NICKNAME_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: CHANGE_NICKNAME_FAILURE,
+      error: err.response.data,
+    })
+  }
+};
 
 function followAPI() {
   return axios.post('/follow')
-}
+};
 
 function* follow(action) {
   try {
@@ -103,11 +123,11 @@ function* follow(action) {
       error: err.response.data,
     })
   }
-}
+};
 
 function unfollowAPI() {
   return axios.post('/unfollow')
-}
+};
 
 function* unfollow(action) {
   try {
@@ -123,31 +143,35 @@ function* unfollow(action) {
       error: err.response.data,
     })
   }
-}
+};
 
 function* watchLoadMyInfo() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
-}
+};
 
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
-}
+};
 
 function* watchLogOut() {
   yield takeLatest(LOG_OUT_REQUEST, logOut);
-}
+};
 
 function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
-}
+};
+
+function* watchChangeNickname() {
+  yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
+};
 
 function* watchFollow() {
   yield takeLatest(FOLLOW_REQUEST, follow);
-}
+};
 
 function* watchUnfollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
-}
+};
 
 export default function* userSaga() {
   yield all([
@@ -155,7 +179,8 @@ export default function* userSaga() {
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
+    fork(watchChangeNickname),
     fork(watchFollow),
     fork(watchUnfollow),
   ])
-}
+};

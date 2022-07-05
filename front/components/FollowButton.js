@@ -23,6 +23,10 @@ const FollowButton = ({ post }) => {
     }
   }, [isFollowing]);
 
+  if (post.User.id === me.id) {   // 게시글 작성자 아이디와 로그인 유저의 아이디가 같으면 안보이게
+    return null;
+  }
+
   return (
     <Button loading={followLoading || unfollowLoading} onClick={onClickButton}>
       {isFollowing ? '언팔로우' : '팔로우'}

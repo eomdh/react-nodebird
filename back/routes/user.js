@@ -6,6 +6,37 @@ const passport = require('passport');
 const { User, Post } = require('../models'); // 구조분해할당
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
+router.get('/', async (req, res, next) => {   // GET /user/ 
+  try {
+    if (req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where:  { id: req.user.id },
+        attributes: {
+          exclude: ['password']   // 전체 데이터에서 password만 제외
+        },
+        include: [{
+          model: Post,
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Followings',
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Followers',
+          attributes: ['id'],
+        }]
+      })
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.post('/', isNotLoggedIn, async (req, res, next) => {  // POST /user/
   try {
     const usedEmail = await User.findOne({    // 중복 email 검사
@@ -59,12 +90,15 @@ router.post('/login', isNotLoggedIn, (req, res, next) => { // 미들웨어 확�
         },
         include: [{
           model: Post,
+          attributes: ['id'],
         }, {
           model: User,
           as: 'Followings',
+          attributes: ['id'],
         }, {
           model: User,
           as: 'Followers',
+          attributes: ['id'],
         }]
       })
       return res.status(200).json(fullUserWithoutPassword);

@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import PostImages from "./PostImages";
 import CommentForm from "./CommentForm";
 import PostCardContent from "./PostCardContent";
-import { REMOVE_POST_REQUEST } from "../reducers/post";
+import { LIKE_POST_REQUEST, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST } from "../reducers/post";
 import FollowButton from "./FollowButton";
 
 const CardWrapper = styled.div`
@@ -17,13 +17,23 @@ const CardWrapper = styled.div`
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
-  const [liked, setLiked] = useState(false);
   const [commentFormOpend, setCommentFormOpend] = useState(false);  
   const id = useSelector((state) => state.user.me?.id);
+  const liked = post.Likers.find((v) => v.id === id);
   const { removePostLoading } = useSelector((state) => state.post);
 
-  const onToggleLike = useCallback(() => {
-    setLiked((prev) => !prev);    // prev에는 liked의 이전 데이터가 들어가있음
+  const onLike = useCallback(() => {
+    dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    })
+  }, []);
+
+  const onUnlike = useCallback(() => {
+    dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    })
   }, []);
 
   const onToggleComment = useCallback(() => {
@@ -44,8 +54,8 @@ const PostCard = ({ post }) => {
         actions={[
           <RetweetOutlined key="retrweet" />,
           liked
-            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
-            : <HeartOutlined key="heart" onClick={onToggleLike} />,
+            ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onUnlike} />
+            : <HeartOutlined key="heart" onClick={onLike} />,
           <MessageOutlined key="comment" onClick={onToggleComment} />,
           <Popover key="more" content={(
             <Button.Group>
@@ -87,8 +97,6 @@ const PostCard = ({ post }) => {
             )}
           />
         </div>)}
-      {/* <CommentForm />
-      <Comments /> */}
     </CardWrapper>
   )
 }
@@ -99,9 +107,10 @@ PostCard.propTypes = {
     User: PropTypes.object,
     content: PropTypes.string,
     createdAt: PropTypes.string,
-    Comments: PropTypes.arrayOf(PropTypes.any),
-    Images: PropTypes.arrayOf(PropTypes.any),
-  }),
+    Comments: PropTypes.arrayOf(PropTypes.object),
+    Images: PropTypes.arrayOf(PropTypes.object),
+    Likers: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
 };
 
 export default PostCard;

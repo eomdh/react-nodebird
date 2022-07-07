@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const passportConfig = require('./passport');
 const passport = require('passport');
 const morgan = require('morgan');
-
+const path = require('path');
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
@@ -30,6 +30,7 @@ app.use(cors({
   credentials: true,
 }));
 
+app.use('/', express.static(path.join(__dirname, 'uploads'))); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));

@@ -1,14 +1,47 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const { Post, User, Comment, Image } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
-router.post('/', isLoggedIn, async (req, res) => {  // POST /post
+try {
+  fs.accessSync('uploads');
+} catch (error) {
+  console.log('uploads 폴더가 없으므로 폴더를 생성합니다.');
+  fs.mkdirSync('uploads');
+}
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {   // (ex: image.png)             
+      const ext = path.extname(file.originalname);  // 확장자 추출 (.png)
+      const basename = path.basename(file.originalname, ext);   // (image)
+      done(null, basename + '_' + new Date().getTime() + ext); // image202207071212.png
+    }
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB (파일 사이즈 제한)
+});
+
+router.post('/', isLoggedIn, upload.none(), async (req, res) => {  // POST /post
   try {
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {  // 여러 개 : [img1.png, img2.png]
+        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image })));
+        await post.addImages(images);
+      } else {  // 한 개 : img.png
+        const image = await Image.create({ src: req.body.image });
+        await post.addImages(image);
+      }
+    }
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [{
@@ -35,7 +68,7 @@ router.post('/', isLoggedIn, async (req, res) => {  // POST /post
   }
 });
 
-router.delete('/:postId', isLoggedIn, async (req, res) => {    // DELETE /post/1
+router.delete('/:postId', isLoggedIn, async (req, res, next) => {    // DELETE /post/1
   try {
     await Post.destroy({
       where: { 
@@ -43,11 +76,16 @@ router.delete('/:postId', isLoggedIn, async (req, res) => {    // DELETE /post/1
         UserId: req.user.id,
       },
     });
-    res.status(200).json({ PostId: parseInt(req.params.postId) });
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
   } catch (error) {
     console.error(error);
     next(error);
   }
+});
+
+router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {  // POST /post/images
+  console.log(req.files);
+  res.json(req.files.map((v) => v.filename));
 });
 
 router.post('/:postId/comment', isLoggedIn, async (req, res) => {

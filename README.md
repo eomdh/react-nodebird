@@ -93,5 +93,55 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
   - 인피니티 스크롤링 코드
   - useEffect에서 window.addEventListener 사용할 때 꼭 return해서 사용했던 이벤트리스너를 해제해줘야 함
 
-  
- 
+### # ch5
+- node.js : Chrome의 V8 엔진으로 빌드된 Javascript 런타임
+- express :  node.js를 사용하여 쉽게 서버를 구성할 수 있게 만든 클래스와 라이브러리의 집합체
+- express에서의 REST API 메소드
+  - app.get 가져오기
+  - app.post 생성
+  - app.put 전체 수정
+  - app.delete 삭제
+  - app.patch 부분 수정
+  - app.options 제공 가능한 API메소드
+  - app.head 헤더만 가져오기
+- app.use(express.json()) : json형식으로 데이터를 req.body에 넣어주는 역할
+- app.use(express.urlencoded({ extended: true }): form을 submit했을 때 urlencoded방식으로 데이터가 넘어옴
+  - express에서 미들웨어를 사용할 때 작성하는 위치가 중요함
+- MySQL 연동
+  - mysql2 : MySQL과 node를 연동해주는 드라이버
+  - sequelize : 자바스크립트 언어로 SQL 조작할 수 있는 라이브러리
+- 시퀄라이즈 모델의 기본 틀 (= MySQL의 테이블)
+```javascript
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    email: {},
+    nickname: {},
+    password: {},
+  }, {
+    charset: 'utf8',
+    collate: 'utf8_general_ci',
+  });
+  User.associate = (db) => {};
+  return User;
+}
+```
+- 관계 설정
+  - hasMany : 하나의 source 모델을 여러 개의 target 모델과 연결
+  - belongsTo : 1:N 관계
+  - belongsToMany : M:N 관계
+- 시퀄라이즈 모델 구현 후 npx sequelize db:create 하여 DB에 스키마 생성
+- 비동기 함수에는 await 꼭 사용하기
+- CORS : 다른 도메인으로 요청을 보내면 브라우저가 차단하는 에러
+  - 브라우저에서 서버로 요청할 때만 에러가 발생
+  - 프록시 방식으로 해결 (브라우저 => 프론트 서버 => 백엔드 서버)
+- passport 로그인 전략 구현
+  - cookie : 백엔드 서버에서 브라우저로 실제적인 정보 대신 특수한 문자열을 보내주는 것 (보안강화)
+  - session : 보내준 쿠키의 실제적인 데이터들
+  - 쿠키를 다른 도메인으로 전달하고 싶으면 cores에서 credential: true 설정, axios에서 withCredentials: true 설정
+- 게시글 10개씩 불러오기
+  - limit과 offset은 게시글이 중간에 추가 삭제 될 때 문제 발생 => limit과 lastId로 구현
+- 이미지 업로드 : multer 라이브러리로 multipart 해결
+  - 하드디스크에 저장하는 방식으로 개발 후 배포 시 아마존 S3 클라우드로 변경
+  - 먼저 서버에 이미지를 업로드하고 서버에서 프론트로 응답하여 미리보기, 리사이징할 수 있도록하는 방식
+- GET 요청에서 url에 데이터를 담으려면 쿼리스트링 사용
+  - GET 요청은 데이터 캐싱이 가능하다는 장점이 있

@@ -38,6 +38,41 @@ router.get('/', async (req, res, next) => {   // GET /user/
   }
 });
 
+router.get('/:userId', async (req, res, next) => {   // GET /user/ 
+  try {
+    const fullUserWithoutPassword = await User.findOne({
+      where:  { id: req.params.userId },
+      attributes: {
+        exclude: ['password']   // 전체 데이터에서 password만 제외
+      },
+      include: [{
+        model: Post,
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followings',
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Followers',
+        attributes: ['id'],
+      }]
+    })
+    if (fullUserWithoutPassword) {
+      const data = fullUserWithoutPassword.toJSON();
+      data.Posts = data.Posts.length;   // 개인정보 침해 예방
+      data.Followings = data.Followings.length;
+      data.Followers = data.Followers.length;
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(404).json('존재하지 않는 사용자입니다.');
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.post('/', isNotLoggedIn, async (req, res, next) => {  // POST /user/
   try {
     const usedEmail = await User.findOne({    // 중복 email 검사

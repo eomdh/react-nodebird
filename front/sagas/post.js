@@ -2,6 +2,7 @@ import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 
 import {
+  LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE,
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
@@ -12,6 +13,26 @@ import {
   RETWEET_REQUEST, RETWEET_SUCCESS, RETWEET_FAILURE,
 } from "../reducers/post";
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from "../reducers/user";
+
+function loadPostAPI(data) {
+  return axios.get(`/post/${data}`);
+};
+
+function* loadPost(action) {
+  try {
+    const result = yield call(loadPostAPI, action.data);
+    yield put({
+      type: LOAD_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_POST_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
 
 function loadPostsAPI(lastId) {
   return axios.get(`/posts?lastId=${lastId || 0}`);  // 쿼리스트링
@@ -174,6 +195,10 @@ function* retweet(action) {
 };
 
 function* watchLoadPost() {
+  yield takeLatest(LOAD_POST_REQUEST, loadPost);
+};
+
+function* watchLoadPosts() {
   yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 };
 
@@ -208,6 +233,7 @@ function* watchRetweet() {
 export default function* postSaga() {
   yield all([
     fork(watchLoadPost),
+    fork(watchLoadPosts),
     fork(watchAddPost),
     fork(watchRemovePost),
     fork(watchUploadImages),

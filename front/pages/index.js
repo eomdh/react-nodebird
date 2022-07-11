@@ -49,6 +49,8 @@ const Home = () => {
 
 // 프론트 서버에서 실행
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  console.log('getServerSideProps Start');
+  console.log(context.req.headers);
   const cookie = context.req ? context.req.headers.cookie : '';   // 서버쪽으로 쿠키 전달
   axios.defaults.headers.Cookie = '';
   if (context.req && cookie) {  // 쿠키가 모든 서버에 공유되는 것 방지
@@ -61,6 +63,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     type: LOAD_POSTS_REQUEST,
   });
   context.store.dispatch(END);
+  console.log('getServerSideProps End');
   await context.store.sagaTask.toPromise();
 });
 

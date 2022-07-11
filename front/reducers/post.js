@@ -2,33 +2,41 @@ import produce from 'immer';
 
 export const initialState = {
   mainPosts: [],
-  imagePaths: [],   // 이미지 업로드할 때 이미지 경로들
+  imagePaths: [],   // 이미지 업로드할 때 이미지 경로
+  singlePost: null,
   hasMorePosts: true,
-  loadPostsLoading: false,
+  loadPostLoading: false, // 단일 게시글 불러오기
+  loadPostDone: false,
+  loadPostError: null,
+  loadPostsLoading: false,  //  모든 게시글 불러오기
   loadPostsDone: false,
   loadPostsError: null,
-  addPostLoading: false,
+  addPostLoading: false,  // 게시글 추가
   addPostDone: false,
   addPostError: null,
-  removePostLoading: false,
+  removePostLoading: false, // 게시글 삭제
   removePostDone: false,
   removePostError: null,
-  uploadImagesLoading: false,
+  uploadImagesLoading: false, // 이미지 업로드
   uploadImagesDone: false,
   uploadImagesError: null,
-  addCommentLoading: false,
+  addCommentLoading: false,  // 댓글 추가
   addCommentDone: false,
   addCommentError: null,
-  likePostLoading: false,
+  likePostLoading: false, // 게시글 좋아요
   likePostDone: false,
   likePostError: null,
-  unlikePostLoading: false,
+  unlikePostLoading: false,   // 좋아요 취소
   unlikePostDone: false,
   unlikePostError: null,
-  retweetLoading: false,
+  retweetLoading: false,  // 리트윗
   retweetDone: false,
   retweetError: null,
 };
+
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -78,6 +86,19 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_POST_REQUEST:
+        draft.loadPostLoading = true;
+        draft.loadPostDone = false;
+        draft.loadPostError = null;
+      case LOAD_POST_SUCCESS:
+        draft.loadPostLoading = false;
+        draft.loadPostDone = true;
+        draft.singlePost = action.data;
+        break;
+      case LOAD_POST_FAILURE:
+        draft.loadPostLoading = false;
+        draft.loadPostError = action.error;
+        break;
       case LOAD_POSTS_REQUEST:
         draft.loadPostsLoading = true;
         draft.loadPostsDone = false;

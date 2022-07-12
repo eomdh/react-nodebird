@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
 import { Avatar, Button, Card } from 'antd';
 import styled from 'styled-components';
 
@@ -22,13 +23,17 @@ const UserProfile = () => {
   return (
     <Card
       actions={[
-        <div key="twit">짹짹<br />{me.Posts.length}</div>,
-        <div key="followings">팔로잉<br />{me.Followings.length}</div>,
-        <div key="followers">팔로워<br />{me.Followers.length}</div>
+        <div key="twit"><Link href={`/user/${me.id}`}><a>짹짹<br />{me.Posts.length}</a></Link></div>,
+        <div key="followings"><Link href={`profile`}><a>팔로잉<br />{me.Followings.length}</a></Link></div>,
+        <div key="followers"><Link href={`profile`}><a>팔로워<br />{me.Followers.length}</a></Link></div>
       ]}
     >
       <Card.Meta
-        avatar={<Avatar>{me.nickname[0]}</Avatar>}
+        avatar={(
+          <Link href={`/user/${me.id}`}>
+            <Avatar>{me.nickname[0]}</Avatar>
+          </Link>
+        )}
         title={me.nickname}
       />
       <ButtonWrapper onClick={onLogout} loading={logOutLoading}>로그아웃</ButtonWrapper>

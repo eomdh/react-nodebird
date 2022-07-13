@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import PostImages from "./PostImages";
 import CommentForm from "./CommentForm";
@@ -15,6 +16,8 @@ import FollowButton from "./FollowButton";
 const CardWrapper = styled.div`
   margin-bottom: 20px;
 `;
+
+moment.locale('ko');
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
@@ -98,6 +101,7 @@ const PostCard = ({ post }) => {
         ? (<Card
              cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}
            >
+             <div style={{ float: 'right' }}>{ moment(post.createdAt).format('YYYY/MM/DD h:mm') }</div>
              <Card.Meta
                avatar={(
                  <Link href={`user/${post.Retweet.User.id}`}>
@@ -108,7 +112,10 @@ const PostCard = ({ post }) => {
                description={<PostCardContent postData={post.Retweet.content} />}
              />
           </Card>)
-        : (<Card.Meta
+        : (
+          <>
+            <div style={{ float: 'right' }}>{ moment(post.createdAt).format('YYYY/MM/DD h:mm') }</div>
+            <Card.Meta
              avatar={(
                <Link href={`user/${post.User.id}`}>
                  <Avatar>{post.User.nickname[0]}</Avatar>
@@ -116,7 +123,9 @@ const PostCard = ({ post }) => {
              )}
              title={post.User.nickname}
              description={<PostCardContent postData={post.content} />}
-           />)}
+            />
+          </>
+          )}
       </Card>
       {commentFormOpend && (
         <div>

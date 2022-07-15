@@ -8,13 +8,13 @@ import AppLayout from '../components/AppLayout';
 import wrapper from '../store/configureStore';
 import { LOAD_USER_REQUEST } from '../reducers/user';
 
-const About = () => {
+const Profile = () => {
   const { userInfo } = useSelector((state) => state.user);
 
   return (
     <AppLayout>
       <Head>
-        <title>EomDeokHyeon | NodeBird</title>
+        <title>ZeroCho | NodeBird</title>
       </Head>
       {userInfo
         ? (
@@ -50,12 +50,13 @@ const About = () => {
 };
 
 export const getStaticProps = wrapper.getStaticProps(async (context) => {
+  console.log('getStaticProps');
   context.store.dispatch({
     type: LOAD_USER_REQUEST,
-    data: 2,
+    data: 1,
   });
   context.store.dispatch(END);
   await context.store.sagaTask.toPromise();
 });
 
-export default About;
+export default Profile;

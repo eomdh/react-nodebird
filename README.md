@@ -190,9 +190,9 @@ await context.store.sagaTask.Promise();
   - foramt 메소드로 편리하게 사용 
 - Build
   - next build로 각 페이지의 용량 확인할 수 있음
-  - next/bundle-analyzer 라이브러리로 용량을 분석할 수 있다.
+  - next/bundle-analyzer 라이브러리로 용량을 분석할 수 있음
 - 웹팩 설정
   - next.config.js 파일 생성
   - 웹팩은 next에 기본 설정이 있기 때문에 React에서 웹팩 설정하듯이 하는게 아니라 config 통해서 기본 설정을 바꿔주는 식으로 해야함
   - compress: true => html, css, js, ts 등의 파일을 gzip으로 압축하여 용량 줄일 수 있음
-  - 브라우저는 gzip으로 압축된 것을 압축하여 제공할 수 있
+  - 브라우저는 gzip으로 압축된 것을 압축하여 제공할 수 있음  

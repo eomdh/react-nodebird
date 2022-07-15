@@ -38,7 +38,7 @@ passportConfig();
 app.use(morgan('dev'));
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'nodebird.com'],
+  origin: ['http://localhost:3000', 'nodebird.com', 'http://13.125.210.183'],
   credentials: true,
 }));
 

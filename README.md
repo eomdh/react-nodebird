@@ -41,13 +41,13 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
   - next-redux-wrapper 6버전 이상에서는 알아서 Provider로 감싸주기 때문에 따로 Provider 감싸줄 필요 없음
 - Switch문에서 ...스프레드 연산자를 사용하여 데이터 추적 밑 메모리 절약
 - 컴포넌트에서 reduce를 useSelector로 받아 사용하고, useDispatch로 액션을 dispatch함
-- ```javascript
+```javascript
   const middlewares = [];
   const enhancer = process.env.NODE_ENV === 'production'
     ? compose(applyMiddleware(...middlewares))
     : composeWithDevTools(applyMiddleware(...middlewares))
-  ```
-  => redux-devtools에 액션을 기록하기 위해 미들웨어 사용
+```
+  - redux-devtools에 액션을 기록하기 위해 미들웨어 사용
 - reducer를 합칠때는 combineReducer가 필요함
 - react-slick 라이브러리로 캐러셀 구현
 
@@ -58,7 +58,7 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
   - 제너레이터의 원리와 다양한 이펙트, 전체적인 흐름을 잘 아는것이 중요
   - rootSaga를 만들고, 거기에 비동기 액션들을 만들어줌
 - 제너레이터 문법 : 중단점이 있는 함수
-- ```javascript
+```javascript
      const gen = function* () {
       console.log(1);
       yield;
@@ -89,7 +89,7 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
           }
         }
       }
-  ```
+```
   - 인피니티 스크롤링 코드
   - useEffect에서 window.addEventListener 사용할 때 꼭 return해서 사용했던 이벤트리스너를 해제해줘야 함
 
@@ -148,26 +148,24 @@ module.exports = (sequelize, DataTypes) => {
   
 ### # ch6
 - 서버사이드 렌더링
-- ```javascript
+```javascript
   epoxrt const getServerSideProps = wrapper.getServerSideProps((context) => { ... }
-  ```
+```
   - 이 코드가 index.js보다 먼저 실행되어 화면 렌더 될 때 redux에 데이터가 채워진 상태로 존재함
   - getServerSideProps : 접속할 때 마다 상황에 맞춰 화면이 바뀌는 경우
   - getStaticProps : 언제 접속해도 데이터가 바뀔 일 없는 경우
 - __NEXT_REDUX_WRAPPER_HYDRATE__
   - 서버사이드렌더링이 완료될 때 호출되는 액션
 - 로그인 후 새로고침하면 쿠키가 서버에 전달되지 않아 로그인이 풀리기 때문에 프론트 서버로 쿠키 전달
-- ```javascript
+```javascript
 if (context.req && cookie)
   axios.defaults.headers.Cookie = cookie;
-}
+}  // 쿠키가 모든 서버에 공유되는 것 방지 (보안 강화)
 ```
-  - 쿠키가 모든 서버에 공유되는 것 방지 (보안 강화)
 ```javascript
 context.store.dispatch(END);
-await context.store.sagaTask.Promise();
+await context.store.sagaTask.Promise();  // 서버사이드렌더링에서 REQUEST가 SUCCESS 될 때 까지 기다리도록
 ```
-  - 서버사이드렌더링에서 REQUEST가 SUCCESS 될 때 까지 기다리도록
 - Styled-Components CSS 서버사이드 렌더링
   - babel-plugin-styled-components 인스톨
   - .babelrc 폴더 생성

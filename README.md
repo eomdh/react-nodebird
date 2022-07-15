@@ -193,4 +193,24 @@ await context.store.sagaTask.Promise();  // 서버사이드렌더링에서 REQUE
   - next.config.js 파일 생성
   - 웹팩은 next에 기본 설정이 있기 때문에 React에서 웹팩 설정하듯이 하는게 아니라 config 통해서 기본 설정을 바꿔주는 식으로 해야함
   - compress: true => html, css, js, ts 등의 파일을 gzip으로 압축하여 용량 줄일 수 있음
-  - 브라우저는 gzip으로 압축된 것을 압축하여 제공할 수 있음  
+  - 브라우저는 gzip으로 압축된 것을 압축하여 제공할 수 있음
+
+### # ch7
+- AWS에 배포
+- AWS에 EC2 인스턴스 2개 생성
+  - 윈도우 환경에서 UNPROTECTED PRIVATE KEY FILE! 에러 발생
+  - pem 파일의 상속 제거, 보안 주체를 소유자로 해서 권한 수정하여 에러 해결
+- 생성한 EC2 인스턴스를 각각 fornt, back 서버와 연결하고 github의 코드와 연결
+- front 서버와 back 서버에 node.js 설치 (back 서버에는 MySQL도 설치)
+- back 서버 실행시 발생한 오류
+  - ERROR: Access denied for user 'root'@'localhost' (using password: YES);
+  - 구글링 결과 MySQL 비밀번호가 틀려서 발생하는 오류라고 하여 비밀번호를 변경하였으나 오류 해결되지 않음
+  - 비밀번호 변경 후 .env 파일 수정하지 않아서 발생했던 오류였음
+- foreground process : 터미널 끄면 같이 꺼짐
+- background process : 터미널 꺼도 꺼지지 않음
+  - pm2 라이브러리로 실행
+- 노드에서 프로덕션 서버할때 hpp, helmet은 보안을 위해서 필수 사항
+- 프론트 서버 배포
+  - 요청 URL을 config 파일에 변수로 빼서 사용 (EC2 IP 주소가 계속 바뀌기 때문)
+- npx pm2 start npm --start
+  - pm2를 통해 npm start 할 수 있음 

@@ -79,7 +79,7 @@ ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
   - shortId : 무작위 아이디를 생성해주는 라이브러리
   - faker : 이름, 문단, 문장, 이미지 등의 더미데이터를 생성해주는 라이브러리
 - immer : 불변성을 유지하는 코드를 작성하기 쉽게 도와주는 라이브러리
-- ```javascript
+```javascript
   function onScroll() {
         if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 400) {
           if (hasMorePosts && !loadPostsLoading) {  // 다 불러왔거나, 불러오는 중이면 dispatch 안됨
@@ -144,4 +144,55 @@ module.exports = (sequelize, DataTypes) => {
   - 하드디스크에 저장하는 방식으로 개발 후 배포 시 아마존 S3 클라우드로 변경
   - 먼저 서버에 이미지를 업로드하고 서버에서 프론트로 응답하여 미리보기, 리사이징할 수 있도록하는 방식
 - GET 요청에서 url에 데이터를 담으려면 쿼리스트링 사용
-  - GET 요청은 데이터 캐싱이 가능하다는 장점이 있
+  - GET 요청은 데이터 캐싱이 가능하다는 장점이 있음
+  
+### # ch6
+- 서버사이드 렌더링
+- ```javascript
+  epoxrt const getServerSideProps = wrapper.getServerSideProps((context) => { ... }
+  ```
+  - 이 코드가 index.js보다 먼저 실행되어 화면 렌더 될 때 redux에 데이터가 채워진 상태로 존재함
+  - getServerSideProps : 접속할 때 마다 상황에 맞춰 화면이 바뀌는 경우
+  - getStaticProps : 언제 접속해도 데이터가 바뀔 일 없는 경우
+- __NEXT_REDUX_WRAPPER_HYDRATE__
+  - 서버사이드렌더링이 완료될 때 호출되는 액션
+- 로그인 후 새로고침하면 쿠키가 서버에 전달되지 않아 로그인이 풀리기 때문에 프론트 서버로 쿠키 전달
+- ```javascript
+if (context.req && cookie)
+  axios.defaults.headers.Cookie = cookie;
+}
+```
+  - 쿠키가 모든 서버에 공유되는 것 방지 (보안 강화)
+```javascript
+context.store.dispatch(END);
+await context.store.sagaTask.Promise();
+```
+  - 서버사이드렌더링에서 REQUEST가 SUCCESS 될 때 까지 기다리도록
+- Styled-Components CSS 서버사이드 렌더링
+  - babel-plugin-styled-components 인스톨
+  - .babelrc 폴더 생성
+  - pages폴더에 _document.js 파일 생성
+  - app.js가 document로 감싸지면서 제일 위에 있는 html, head, body등을 수정할 수 있음
+- SWR란
+  - 원격데이터 fetch를 위한 커스텀 훅 npm 모듈
+  - 첫번째 인자로 원격 상태에 대한 key, 두번째 인자로 데이터 fetch 함수를 받음
+  - SWR에서 loading => data도 없고, error도 없을때,
+  - return이 hooks보다 위에 있을 수 없음
+  - swr은 매우 직관적이며 서버사이드렌더링 또한 가능함
+- 라우팅 할 때 와일드카드(params)는 왠만하면 아래로 내려주는 것이 좋음
+  - 미들웨어는 위에서 아래로, 왼쪽에서 오른쪽 순으로 실행되기 때문
+  - /user/followers가 /user/:userId 에서 걸려서 오류 발생
+- 게시글에 날짜 정보 추가
+  - moment 라이브러리 활용 (dayjs로 넘어가는 추세, 용량면에서 이득)
+  - ```javascript
+    moment(post.createdAt).format('YYYY/MM/DD h:mm')
+    ```
+  - foramt 메소드로 편리하게 사용 
+- Build
+  - next build로 각 페이지의 용량 확인할 수 있음
+  - next/bundle-analyzer 라이브러리로 용량을 분석할 수 있다.
+- 웹팩 설정
+  - next.config.js 파일 생성
+  - 웹팩은 next에 기본 설정이 있기 때문에 React에서 웹팩 설정하듯이 하는게 아니라 config 통해서 기본 설정을 바꿔주는 식으로 해야함
+  - compress: true => html, css, js, ts 등의 파일을 gzip으로 압축하여 용량 줄일 수 있음
+  - 브라우저는 gzip으로 압축된 것을 압축하여 제공할 수 있

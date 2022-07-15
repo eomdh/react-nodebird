@@ -7,6 +7,8 @@ const passportConfig = require('./passport');
 const passport = require('passport');
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -16,6 +18,14 @@ const hashtagRouter = require('./routes/hashtag');
 const db = require('./models');
 const app = express();
 dotenv.config();
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+  app.use(hpp());
+  app.use(helmet());
+} else {
+  app.use(morgan('dev'));
+}
 
 db.sequelize.sync()
   .then(() => {
@@ -28,7 +38,7 @@ passportConfig();
 app.use(morgan('dev'));
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'nodebird.com'],
   credentials: true,
 }));
 

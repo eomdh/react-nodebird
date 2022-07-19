@@ -26,7 +26,7 @@ const upload = multer({
     s3: new AWS.S3(),
     bucket: 'react-nodebird-eomdh',
     key(req, file, cb) {
-      cb(null, `original/${Date.new()}_${path.basename(file.originalname)}`)
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
     }
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB (파일 사이즈 제한)

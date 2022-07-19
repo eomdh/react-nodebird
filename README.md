@@ -213,4 +213,20 @@ await context.store.sagaTask.Promise();  // 서버사이드렌더링에서 REQUE
 - 프론트 서버 배포
   - 요청 URL을 config 파일에 변수로 빼서 사용 (EC2 IP 주소가 계속 바뀌기 때문)
 - npx pm2 start npm --start
-  - pm2를 통해 npm start 할 수 있음 
+  - pm2를 통해 npm start 할 수 있음
+- 배포 후 수정사항이 생기면
+  - front : git pull -> build -> pm2 start
+  - back : git pull -> pm2 reload all
+- 탄력적 IP 주소
+  - 동적 클라우드 컴퓨팅을 위해 고안된 고정 퍼블릭 IPv 주소
+  - 모든 인스턴스 또는 네트워크 인터페이스에 탄력적 IP 주소를 연결 가능
+  - EC2 인스턴스를 생성하여 서버를 실행하면 동적IP를 핟랑받아 IP가 변경되는 문제가 발생하기 때문에 사용
+- S3
+  - 확장성, 데이터 가용성, 보안을 제공하는 객체 스토리지 서비스
+  - S3 버킷 생성 (퍼블릭 액세스 차단 비활성화)
+  - 버킷 정책 작성하여 퍼블릭으로 설정 (모든 사용자가 이미지 업로드 할 수 있도록)
+- aws-sdk : S3 접근권한 얻을 때 사용하는 라이브러리
+- multer-s3 : multer를 통해 S3 스토리지에 올릴 때 사용하는 라이브러리
+  - Error: Cannot find module '@aws-sdk/abort-controller' 
+  - aws-sdk v2를 사용하는 경우 multer-s3도 2.x.x 버전으로 설치해야 함. multer-s3을 2.9.0 버전으로 재설치하여 해결
+

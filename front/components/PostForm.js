@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from '../reducers/post';
 import useInput from '../hooks/useInput';
 import { Button, Form, Input } from 'antd';
-import { backUrl } from '../config/config';
 
 const PostForm = () => {
   const dispatch = useDispatch();

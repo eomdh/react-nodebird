@@ -233,6 +233,6 @@ await context.store.sagaTask.Promise();  // 서버사이드렌더링에서 REQUE
   - lambda : 이벤트에 대한 응답으로 코드를 실행하고 자동으로 기본 컴퓨팅 리소스를 관리하는 서버리스 컴퓨팅 서비스 (작은 함수 하나를 실행)
   - 프로젝트 폴더에 lambda 폴더 생성 후 aws-sdk와 sharp(이미지 리사이징 라이브러리)를 설치
   - index.js에 이미지 리사이징하는 코드 작성 후 폴더를 압축하여 s3에 업로드
-  - lambda에 함수를 생성하고 트리거 
-  
+  - lambda에 함수를 생성하고 트리거 설정
+ 
 

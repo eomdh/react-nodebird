@@ -5,7 +5,7 @@ const s3 = new AWS.S3();
 
 exports.handler = async (event, context, callback) => {
   const Bucket = event.Records[0].s3.bucket.name;                   // react-nodebird-eomdh
-  const Key = decodeURIcomponent(event.Records[0].s3.object.key);   // 파일명 한글문제
+  const Key = decodeURIComponent(event.Records[0].s3.object.key);   // 파일명 한글문제
   console.log(Bucket, Key);
   const filename = Key.split('/')[Key.split('/').length - 1];           // 파일명
   const ext = Key.split('.')[Key.split('.').length - 1].toLowerCase();  // 확장자

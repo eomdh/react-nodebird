@@ -4,12 +4,12 @@ const sharp = require('sharp');
 const s3 = new AWS.S3();
 
 exports.handler = async (event, context, callback) => {
-  const Bucket = event.Records[0].s3.bucket.name;                   // react-nodebird-eomdh
-  const Key = decodeURIComponent(event.Records[0].s3.object.key);   // 파일명 한글문제
+  const Bucket = event.Records[0].s3.bucket.name;                 // react-nodebird-eomdh
+  const Key = decodeURIComponent(event.Records[0].s3.object.key); // 파일명의 한글 문제
   console.log(Bucket, Key);
   const filename = Key.split('/')[Key.split('/').length - 1];           // 파일명
-  const ext = Key.split('.')[Key.split('.').length - 1].toLowerCase();  // 확장자
-  const requiredFormat = ext === 'jpg' ? 'jpeg' : ext;                  // jpg 확장자는 jpeg로
+  const ext = Key.split('.')[Key.split('.').length - 1].toLowerCase();  // 확장자 소문자
+  const requiredFormat = ext === 'jpg' ? 'jpeg' : ext;                  // jpg 파일은 jpeg로
   console.log('filename', filename, 'ext', ext);
 
   try {
@@ -27,7 +27,7 @@ exports.handler = async (event, context, callback) => {
     console.log('put', resizedImage.length);
     return callback(null, `thumb/${filename}`);
   } catch (error) {
-    console.error(error);
+    console.error(error)
     return callback(error);
   }
 }

@@ -1,7 +1,7 @@
 # React-Nodebird
 ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
 <br /><br />
-[결과물 바로가기](http://www.nodebird.online/)
+[결과물 바로가기](http://www.nodebird.online/) (인스턴스 중지상태)
 <br /><br />
 
 # 🛠 사용 기술

@@ -229,4 +229,10 @@ await context.store.sagaTask.Promise();  // 서버사이드렌더링에서 REQUE
 - multer-s3 : multer를 통해 S3 스토리지에 올릴 때 사용하는 라이브러리
   - Error: Cannot find module '@aws-sdk/abort-controller' 
   - aws-sdk v2를 사용하는 경우 multer-s3도 2.x.x 버전으로 설치해야 함. multer-s3을 2.9.0 버전으로 재설치하여 해결
+- lambda로 이미지 리사이징하기
+  - lambda : 이벤트에 대한 응답으로 코드를 실행하고 자동으로 기본 컴퓨팅 리소스를 관리하는 서버리스 컴퓨팅 서비스 (작은 함수 하나를 실행)
+  - 프로젝트 폴더에 lambda 폴더 생성 후 aws-sdk와 sharp(이미지 리사이징 라이브러리)를 설치
+  - index.js에 이미지 리사이징하는 코드 작성 후 폴더를 압축하여 s3에 업로드
+  - lambda에 함수를 생성하고 트리거 설정
+ 
 

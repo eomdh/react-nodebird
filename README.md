@@ -1,18 +1,9 @@
-# React-Nodebird
-ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.
+# 🕊 React-Nodebird
+ZeroCho님의 React로 Nodebird SNS만들기 강의 실습 내용입니다.<br/>
+Next와 Express를 사용하여 구현하였으며, AWS로 배포하는 것을 학습하였습니다.
 <br /><br />
-[결과물 바로가기](http://www.nodebird.online/) (인스턴스 중지상태)
+[결과물 바로가기](http://www.nodebird.online/) (인스턴스 중지)
 <br /><br />
-
-# 🛠 사용 기술
-### - Front
-<img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"> <img src="https://img.shields.io/badge/Redux Saga-764ABC?style=for-the-badge&logo=Redux-Saga&logoColor=white"> <img src="https://img.shields.io/badge/Ant Design-0170FE?style=for-the-badge&logo=Ant Design&logoColor=white"> <img src="https://img.shields.io/badge/styled components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=black"> <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=white"> <img src="https://img.shields.io/badge/Babel-F9DC3E?style=for-the-badge&logo=Babel&logoColor=white"> 
-
-### - Back
-<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white"> <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=black"> <img src="https://img.shields.io/badge/Sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white"> 
-
-### - Deploy
-<img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=black"> <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white"> <img src="https://img.shields.io/badge/AWS Lambda-FF9900?style=for-the-badge&logo=AWS Lambda&logoColor=white">
 
 # ✏ 실습 내용
 ### ch1
